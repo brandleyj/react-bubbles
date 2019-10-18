@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 const Login = props => {
@@ -17,7 +17,7 @@ const Login = props => {
 	const onLogin = e => {
 		e.preventDefault();
 		axios.post("http://localhost:5000/api/login", credentials).then(res => {
-			console.log(res);
+			console.log("PostRequest", res);
 			localStorage.setItem("token", res.data.payload);
 			props.history.push("/bubbles");
 		});
