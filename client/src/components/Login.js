@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { axiosWithAuth } from "./axiosWithAuth";
 
 const Login = props => {
 	const [credentials, setCredentials] = useState({
@@ -14,19 +14,21 @@ const Login = props => {
 		});
 	};
 
-	const onLogin = e => {
+	const login = e => {
 		e.preventDefault();
-		axios.post("http://localhost:5000/api/login", credentials).then(res => {
-			console.log("PostRequest", res);
-			localStorage.setItem("token", res.data.payload);
-			props.history.push("/bubbles");
-		});
+		axiosWithAuth()
+			.post("/login", credentials)
+			.then(res => {
+				console.log("postRequest", res);
+				localStorage.setItem("token", res.data.payload);
+				props.history.push("/bubbles");
+			});
 	};
 
 	return (
 		<>
 			<h1>Login Form</h1>
-			<form onSubmit={onLogin}>
+			<form onSubmit={login}>
 				<input
 					type="text"
 					name="username"
@@ -41,7 +43,7 @@ const Login = props => {
 					value={credentials.password}
 					onChange={handleChange}
 				/>
-				<button>Log In</button>
+				<button>Login</button>
 			</form>
 		</>
 	);
